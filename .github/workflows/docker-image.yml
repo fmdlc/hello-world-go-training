@@ -26,7 +26,7 @@ jobs:
         run: |
            docker buildx build \
              -f ./Dockerfile \
-             -t tty0/hello-world-go-training:1.1 \
+             -t turingsolutions/hello-world-go-training:1.1 \
              --platform=linux/arm64,linux/amd64 .
              
       - name: Push Docker images
@@ -34,6 +34,6 @@ jobs:
         with:
           username: tty0
           password: ${{ secrets.DOCKER_TOKEN }}
-          repository: tty0/hello-world-go-training
+          repository: turingsolutions/hello-world-go-training
           tags: 1.1
  

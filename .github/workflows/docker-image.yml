@@ -14,12 +14,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
+          
       - name: Install Docker Buildx
         id: buildx
         uses: crazy-max/ghaction-docker-buildx@v1
         with:
           buildx-version: latest
+
+      - name: hub.docker.com Login
+        run: |
+          echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u tty0 --password-stdin
 
       - name: Build the multi-arch image
         if: github.ref == 'refs/heads/master'
@@ -28,6 +32,6 @@ jobs:
            docker buildx build \
              --push \
              -f ./Dockerfile \
-             -t tty0/hello-world-go-training:1.0 \
+             -t tty0/hello-world-go-training:1.1 \
              --platform=linux/arm64,linux/amd64 .
  

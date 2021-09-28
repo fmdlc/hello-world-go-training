@@ -37,5 +37,5 @@ jobs:
              --push \
              -f ./Dockerfile \
              -t tty0/hello-world-go-training:1.0 \
-             --platform=linux/arm64,linux/amd64 
+             --platform=linux/arm64,linux/amd64 .
  

@@ -19,14 +19,23 @@ jobs:
         uses: luke142367/Docker-Lint-Action@v1.1.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
-      - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag tty0/hello-world-go-training:1.0 
-      
-      - name: Push Docker images
-        uses: docker/build-push-action@v1
+
+      - name: Install Docker Buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_TOKEN }}
-          repository: tty0/hello-world-go-training
-          tags: 1.0
+          buildx-version: latest
+
+      - name: hub.docker.com Login
+        run: |
+          echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build the multi-arch image
+        if: github.ref == 'refs/heads/master'
+        run: |
+           docker buildx build \
+             --push \
+             -f ./Dockerfile \
+             -t tty0/hello-world-go-training:1.0 \
+             --platform=linux/arm64,linux/amd64 
+ 

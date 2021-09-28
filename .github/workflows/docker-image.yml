@@ -21,14 +21,9 @@ jobs:
         with:
           buildx-version: latest
 
-      - name: hub.docker.com Login
-        run: |
-          echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u tty0 --password-stdin
-
       - name: Build the multi-arch image
         if: github.ref == 'refs/heads/master'
         run: |
-           echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
            docker buildx build \
              -f ./Dockerfile \
              -t tty0/hello-world-go-training:1.1 \
@@ -37,7 +32,7 @@ jobs:
       - name: Push Docker images
         uses: docker/build-push-action@v1
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
+          username: tty0
           password: ${{ secrets.DOCKER_TOKEN }}
           repository: tty0/hello-world-go-training
           tags: 1.1

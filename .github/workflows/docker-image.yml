@@ -30,7 +30,6 @@ jobs:
         run: |
            echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
            docker buildx build \
-             --push \
              -f ./Dockerfile \
              -t tty0/hello-world-go-training:1.1 \
              --platform=linux/arm64,linux/amd64 .
